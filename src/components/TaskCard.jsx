@@ -47,14 +47,13 @@ export default function TaskCard({
   // Quick status change (without opening full editor)
   const [showQuickStatus, setShowQuickStatus] = useState(false);
   useEffect(() => {
-  if (!showQuickStatus) return;
+    if (!showQuickStatus) return;
 
-  const handleClickOutside = () => setShowQuickStatus(false);
-  document.addEventListener("click", handleClickOutside);
+    const handleClickOutside = () => setShowQuickStatus(false);
+    document.addEventListener("click", handleClickOutside);
 
-  return () => document.removeEventListener("click", handleClickOutside);
-}, [showQuickStatus]);
-
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, [showQuickStatus]);
 
   useEffect(() => {
     setForm({
@@ -70,7 +69,6 @@ export default function TaskCard({
     });
     setLocalSubtasks(task.subtasks?.items || []);
   }, [task]);
-  
 
   const handleSave = () => {
     const oldStatus = task.status;
@@ -118,8 +116,7 @@ export default function TaskCard({
     setEditingTask(null);
   };
 
-
- const handleCancel = useCallback(() => {
+  const handleCancel = useCallback(() => {
     setForm({
       title: task.title,
       description: task.description,
@@ -134,7 +131,7 @@ export default function TaskCard({
     setLocalSubtasks(task.subtasks?.items || []);
     setEditingTask(null);
   }, [task, setEditingTask]);
-  
+
   useEffect(() => {
     if (!isEditing) return;
 
@@ -185,20 +182,19 @@ export default function TaskCard({
   };
 
   // Calculate progress
- const progressPercent = (() => {
-  const subtasksSource = isEditing
-    ? localSubtasks
-    : task.subtasks?.items || [];
+  const progressPercent = (() => {
+    const subtasksSource = isEditing
+      ? localSubtasks
+      : task.subtasks?.items || [];
 
-  if (subtasksSource.length > 0) {
-    const completed = subtasksSource.filter((st) => st.done).length;
-    return Math.round((completed / subtasksSource.length) * 100);
-  }
+    if (subtasksSource.length > 0) {
+      const completed = subtasksSource.filter((st) => st.done).length;
+      return Math.round((completed / subtasksSource.length) * 100);
+    }
 
-  const statusMap = { todo: 0, "in-progress": 50, done: 100 };
-  return statusMap[task.status] || 0;
-})();
-
+    const statusMap = { todo: 0, "in-progress": 50, done: 100 };
+    return statusMap[task.status] || 0;
+  })();
 
   const getStatusColor = (status) => {
     const colors = {
